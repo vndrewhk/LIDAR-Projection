@@ -12,13 +12,13 @@ PPTApp = win32com.client.GetActiveObject("PowerPoint.Application")
 
 PPTPresentation = PPTApp.ActivePresentation
 
-def changeSlides(arg):
+def change_slides(arg):
     if arg == "Next":
         PPTPresentation.SlideShowWindow.View.Next()
     if arg == "Prev":
         PPTPresentation.SlideShowWindow.View.Previous()
 
-def openKeyboard():
+def open_keyboard():
     keyboard = subprocess.Popen(["C:\Windows\system32\osk.exe"],shell=True) 
 
 
