@@ -54,13 +54,13 @@ root.wm_attributes('-transparentcolor','red')
 # 
 trans_frame = Frame(root,bg="red")
 trans_frame.pack(fill = BOTH, expand = True)
-keyboard_button = tkinter.Button(trans_frame, width=25, height = 5, text = "Open Keyboard", command=lambda: openKeyboard())
+keyboard_button = tkinter.Button(trans_frame, width=25, height = 5, text = "Open Keyboard", command=lambda: open_keyboard())
 keyboard_button.pack()
 
-back_button = tkinter.Button(trans_frame, width=25, height = 5, text = "Prev", command=lambda: changeSlides("Prev"))
+back_button = tkinter.Button(trans_frame, width=25, height = 5, text = "Prev", command=lambda: change_slides("Prev"))
 back_button.pack()
 
-next_button = Button(trans_frame, width=25, height = 5, text = "Next",command=lambda: changeSlides("Next"))
+next_button = Button(trans_frame, width=25, height = 5, text = "Next",command=lambda: change_slides("Next"))
 next_button.pack()
 
 root.mainloop()
