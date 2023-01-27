@@ -1,8 +1,34 @@
 from tkinter import *#Tk, Toplevel, Canvas, Button
 import time
 
+from tkinter import *
+import win32com.client
+import tkinter
+import os
+import subprocess
+
 # delay program start to open up powerpoint first
 time.sleep(3)
+
+#Get Active instance of PPT
+
+PPTApp = win32com.client.GetActiveObject("PowerPoint.Application")
+
+#Get Active presentation, must be active as presentation
+
+PPTPresentation = PPTApp.ActivePresentation
+
+def change_slides(arg):
+    clear_canvas()
+    if arg == "Next":
+        PPTPresentation.SlideShowWindow.View.Next()
+    if arg == "Prev":
+        PPTPresentation.SlideShowWindow.View.Previous()
+
+def open_keyboard():
+    keyboard = subprocess.Popen(["C:\Windows\system32\osk.exe"],shell=True) 
+
+
 
 # setting the starting coordinate of the line so that
 # on motion it is possible to immediately draw it
@@ -55,16 +81,16 @@ root.bind('<Escape>', lambda e: root.quit())
 # visible
 top = Toplevel(root)
 frame = Frame(top, bg='grey15')
-frame.pack(side='top', fill='x')
+frame.pack(side='bottom', fill='x')
 
 # function to clear the canvas, this should be called when pressing next/prev slide buttons too
 def clear_canvas():
     canvas.delete("all")
 
-btn_next = Button(frame, bd=2, text="Next Slide")
-btn_prev = Button(frame, bd=2, text="Previous Slide")
+btn_next = Button(frame, bd=2, text="Next Slide", command=lambda: change_slides("Next"))
+btn_prev = Button(frame, bd=2, text="Previous Slide", command=lambda: change_slides("Prev"))
 btn_clear = Button(frame, bd=2, text="Clear Highlight", command=clear_canvas)
-btn_keyboard = Button(frame, bd=2, text="Keyboard")
+btn_keyboard = Button(frame, bd=2, text="Keyboard",command=lambda: open_keyboard())
 
 btn_next.pack(side='left')
 btn_prev.pack(side='left')
