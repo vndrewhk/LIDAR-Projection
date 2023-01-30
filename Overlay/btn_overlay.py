@@ -92,8 +92,8 @@ btn_prev = Button(frame, bd=2, text="Previous Slide", command=lambda: change_sli
 btn_clear = Button(frame, bd=2, text="Clear Highlight", command=clear_canvas)
 btn_keyboard = Button(frame, bd=2, text="Keyboard",command=lambda: open_keyboard())
 
-btn_next.pack(side='left')
 btn_prev.pack(side='left')
+btn_next.pack(side='left')
 btn_clear.pack(side='left')
 btn_keyboard.pack(side='left')
 
