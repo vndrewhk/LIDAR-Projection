@@ -1,9 +1,7 @@
+import serial
 import pyautogui
-import time
 
-# Current X and Y coordinates will be obtained via PySerial from microcontroller
-x = 200 # function call from PySerial
-y = 150 # function call from PySerial
+serial_comm = serial.Serial('COM3', 115200, timeout = 1)
 
 # Get resolution of computer screen
 computer_resolution = [pyautogui.size().width, pyautogui.size().height]
@@ -12,17 +10,14 @@ print("The computer's resolution is: ", computer_resolution) #This line is for d
 # Get resolution of projector screen, only one point is needed since values are wrt LIDAR sensor in bottom left corner
 projector_resolution = [400, 300]
 
-# Convert coordinates from project screen to computer screen
-x_conv = (computer_resolution[0]/projector_resolution[0]) * x
-y_conv = (computer_resolution[1]/projector_resolution[1]) * y
+# Calculate conversion factor from projector screen to computer screen
+x_conv = (computer_resolution[0]/projector_resolution[0])
+y_conv = (computer_resolution[1]/projector_resolution[1])
 
-# Infinite loop to read data from microcontroller. Microcontroller will send (0, 0) if no input is received on LIDAR sensor
 while True:
-    if (x != 0 and y != 0):
-        pyautogui.click(x_conv, y_conv)
-        time.sleep(5) #This line is for debug only...remove later
-
-# Current test:
-#   -The projector resolution is currently assumed to be 400 x 300
-#   -I set the X and Y coordinates from the microcontroller to be at the middle of this (200, 150)
-#   -The program will move the mouse to the middle of my computer monitor
+    if serial_comm.in_waiting:
+        packet = serial_comm.readline()
+        coordinate_string = packet.decode("utf-8").strip('\n') # Receive coordinate as a string
+        coordinate_array = list(map(int, coordinate_string.split(", "))) # Convert string to an array [x, y]
+        print(coordinate_array)
+        pyautogui.moveTo(coordinate_array[0]*x_conv, coordinate_array[1]*y_conv, duration=0.0, tween=None, logScreenshot=False, _pause=False)
