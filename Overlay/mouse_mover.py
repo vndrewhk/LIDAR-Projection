@@ -16,6 +16,8 @@ projector_resolution = [400, 300]
 x_conv = (computer_resolution[0]/projector_resolution[0])
 y_conv = (computer_resolution[1]/projector_resolution[1])
 
+# We need to map PSD voltage to angle values here (in radians)
+
 time.sleep(5)
 
 while True:
