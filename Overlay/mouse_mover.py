@@ -1,8 +1,9 @@
 import serial
 import pyautogui
 import time
+import math
 
-serial_comm = serial.Serial('COM3', 115200, timeout = 1)
+serial_comm = serial.Serial('COM5', 115200, timeout = 1)
 
 # Get resolution of computer screen
 computer_resolution = [pyautogui.size().width, pyautogui.size().height]
@@ -22,7 +23,9 @@ while True:
         packet = serial_comm.readline()
         coordinate_string = packet.decode("utf-8").strip('\n') # Receive coordinate as a string
         coordinate_array = list(map(int, coordinate_string.split(", "))) # Convert string to an array [x, y]
-        print(coordinate_array)
-        pyautogui.mouseDown(button='left', x=coordinate_array[0]*x_conv, y=coordinate_array[1]*y_conv, duration=0.0, tween=None, logScreenshot=False, _pause=False)
+        # print(coordinate_array)
+        x_val = coordinate_array[0] * math.cos(coordinate_array[1])
+        y_val = coordinate_array[1] * math.sin(coordinate_array[1])
+        pyautogui.mouseDown(button='left', x=x_val*x_conv, y=y_val*y_conv, duration=0.0, tween=None, logScreenshot=False, _pause=False)
     else:
         pyautogui.mouseUp() # If there's no data waiting in the serial port, lift the left mouse button up
