@@ -6,6 +6,20 @@ import win32com.client
 import tkinter
 import os
 import subprocess
+import serial
+import threading
+
+ser = serial.Serial('COM7', 115200)
+
+def serial_listener():
+    while True:
+        data =  ser.read().decode("utf-8") 
+        if data == 'A':
+            change_slides("Next")
+            time.sleep(10000)
+        elif data == 'B':
+            change_slides("Prev")
+            time.sleep(10000)
 
 # delay program start to open up powerpoint first
 time.sleep(3)
@@ -18,6 +32,10 @@ PPTApp = win32com.client.GetActiveObject("PowerPoint.Application")
 
 PPTPresentation = PPTApp.ActivePresentation
 
+serial_thread = threading.Thread(target = serial_listener)
+serial_thread.daemon = True # terminates thread when main application is closed
+serial_thread.start()
+
 def change_slides(arg):
     clear_canvas()
     if arg == "Next":
@@ -27,7 +45,6 @@ def change_slides(arg):
 
 def open_keyboard():
     keyboard = subprocess.Popen(["C:\Windows\system32\osk.exe"],shell=True) 
-
 
 
 # setting the starting coordinate of the line so that
